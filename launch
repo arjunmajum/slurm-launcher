@@ -17,7 +17,8 @@ echo
 # make a temporary directory
 BASENAME=$(basename -- $PWD)
 mkdir -p $EXPERIMENTS/$BASENAME
-TEMPDIR=$(mktemp -dp $EXPERIMENTS/$BASENAME XXXXXXXXXXXXXXXXXXXX) || exit 1
+DATETIME=$(date +"%Y%m%d%H%M")
+TEMPDIR=$(mktemp -dp $EXPERIMENTS/$BASENAME $DATETIME-XXXX) || exit 1
 echo $TEMPDIR
 
 # copy folder to temporary directory
@@ -27,3 +28,6 @@ cp -a $PWD/. $TEMPDIR
 cd $TEMPDIR
 JOBID=$(sbatch --parsable "$@") || exit 1
 echo $JOBID
+
+# save jobid to disk
+echo $JOBID > jobid
