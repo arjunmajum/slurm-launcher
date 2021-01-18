@@ -1,0 +1,29 @@
+#!/bin/bash
+
+[[ -z "${SLURM_LAUNCHER_ROOT}" ]] && EXPERIMENTS="~/.experiments" || EXPERIMENTS="${SLURM_LAUNCHER_ROOT}"
+
+# verify user input
+echo "Do you want to launch ($PWD):"
+echo "    " sbatch "$@"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) break;;
+        No ) exit;;
+    esac
+done
+echo
+
+
+# make a temporary directory
+BASENAME=$(basename -- $PWD)
+mkdir -p $EXPERIMENTS/$BASENAME
+TEMPDIR=$(mktemp -dp $EXPERIMENTS/$BASENAME XXXXXXXXXXXXXXXXXXXX) || exit 1
+echo $TEMPDIR
+
+# copy folder to temporary directory
+cp -a $PWD/. $TEMPDIR
+
+# launch job from temporary directory
+cd $TEMPDIR
+JOBID=$(sbatch --parsable "$@") || exit 1
+echo $JOBID
