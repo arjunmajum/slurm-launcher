@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+import argparse
+import glob
+import os
+import sys
+
+
+def parse_args():
+    parser = argparse.ArgumentParser("search for jobdirs")
+    parser.add_argument("jobid", type=int)
+    parser.add_argument("-v", "--verbose", action="store_true")
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    if args.verbose:
+        print(f"searching for jobid: {args.jobid}")
+
+    slurm_launcher_root = os.environ["SLURM_LAUNCHER_ROOT"]
+    if args.verbose:
+        print(f"SLURM_LAUNCHER_ROOT: {slurm_launcher_root}")
+
+    files = sorted(glob.glob(os.path.join(slurm_launcher_root, "*", "*", "jobid")))
+    if args.verbose:
+        print(f"found {len(files)} jobs")
+
+    if args.verbose:
+        print("\nsearching...")
+
+    found = None
+    for path in files:
+        jid = int(open(path, "r").read())
+        if args.verbose:
+            print(jid, os.path.dirname(path))
+
+        if jid == args.jobid:
+            found = os.path.dirname(path)
+            if not args.verbose:
+                break
+
+    if args.verbose:
+        print("searching... done!\n")
+
+    if found is None:
+        print(f"could not find {args.jobid}")
+    else:
+        print(found)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
