@@ -7,7 +7,7 @@ import sys
 
 def parse_args():
     parser = argparse.ArgumentParser("search for jobdirs")
-    parser.add_argument("jobid", type=int)
+    parser.add_argument("jobid", type=int, nargs="?")
     parser.add_argument("-v", "--verbose", action="store_true")
     return parser.parse_args()
 
@@ -34,7 +34,7 @@ def main():
         if args.verbose:
             print(jid, os.path.dirname(path))
 
-        if jid == args.jobid:
+        if args.jobid and jid == args.jobid:
             found = os.path.dirname(path)
             if not args.verbose:
                 break
@@ -42,10 +42,10 @@ def main():
     if args.verbose:
         print("searching... done!\n")
 
-    if found is None:
-        print(f"could not find {args.jobid}")
-    else:
+    if found is not None:
         print(found)
+    elif args.jobid is not None:
+        print(f"could not find {args.jobid}")
 
 
 if __name__ == "__main__":
