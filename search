@@ -9,11 +9,13 @@ def parse_args():
     parser = argparse.ArgumentParser("search for jobdirs")
     parser.add_argument("jobid", type=int, nargs="?")
     parser.add_argument("-v", "--verbose", action="store_true")
+    parser.add_argument("-s", "--show", action="store_true")
     return parser.parse_args()
 
 
 def main():
     args = parse_args()
+
     if args.verbose:
         print(f"searching for jobid: {args.jobid}")
 
@@ -44,8 +46,10 @@ def main():
 
     if found is not None:
         print(found)
-    elif args.jobid is not None:
-        print(f"could not find {args.jobid}")
+
+    # fallback to printing slurm info
+    if (found is None and args.jobid is not None) or args.show:
+        os.system(f"scontrol show jobid -dd {args.jobid}")
 
 
 if __name__ == "__main__":
