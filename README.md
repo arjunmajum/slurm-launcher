@@ -6,6 +6,9 @@ A lightweight tool for launching and managing experiments with [slurm](https://s
 
 By making a full copy of your code, you won't need to worry about local edits interfering with your slurm jobs. It also makes it easy to see exactly what code, configuration, etc. was used for previous experiments.
 
+Notes:
+1. Because this tool makes a copy of the current working directory it's best if you use symlinks to point to data folders that you don't want to (unnecessarily) copy.
+
 ## Getting started
 
 The `slurm-launcher` tools (`launch` and `search`) can be installed using the commands below.
