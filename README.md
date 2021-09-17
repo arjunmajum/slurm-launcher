@@ -11,7 +11,7 @@ Notes:
 
 ## Getting started
 
-The `slurm-launcher` tools (`launch` and `search`) can be installed using the commands below.
+The `slurm-launcher` tools (`launch` and `search`) can be configured using the commands below.
 
 You will be asked to specify an "experiments" directory that will be stored in `SLURM_LAUNCHER_ROOT`.
 This directory will be the root folder for storing code, data, checkpoints, etc. for your experiments.
