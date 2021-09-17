@@ -19,7 +19,7 @@ This directory will be the root folder for storing code, data, checkpoints, etc.
 ```bash
 git clone git@github.com:arjunmajum/slurm-launcher.git
 cd slurm-launcher
-./install.sh
+./setup-env.sh
 ```
 
 To verify the installation run:
